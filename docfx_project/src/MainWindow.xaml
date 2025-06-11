@@ -1,0 +1,155 @@
+﻿<Window x:Class="GoogleStyleCalendar.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Google Calendar Light" Height="700" Width="1200"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        Background="#f5f5f5">
+
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <!-- Godziny -->
+            <ColumnDefinition Width="60"/>
+            <!-- Kalendarz główny -->
+            <ColumnDefinition Width="*"/>
+            <!-- Panel formularza -->
+            <ColumnDefinition Width="300"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Kolumna z godzinami -->
+        <Grid Grid.Column="0" Background="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Puste miejsca na dopasowanie -->
+            <TextBlock Grid.Row="0" />
+            <TextBlock Grid.Row="1" />
+
+            <!-- Lista godzin -->
+            <ItemsControl Grid.Row="2">
+                <ItemsControl.ItemsSource>
+                    <x:Array Type="{x:Type sys:String}" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                        <!-- Godziny od 6:00 do 22:00 -->
+                        <sys:String>6:00</sys:String>
+                        <sys:String>7:00</sys:String>
+                        <sys:String>8:00</sys:String>
+                        <sys:String>9:00</sys:String>
+                        <sys:String>10:00</sys:String>
+                        <sys:String>11:00</sys:String>
+                        <sys:String>12:00</sys:String>
+                        <sys:String>13:00</sys:String>
+                        <sys:String>14:00</sys:String>
+                        <sys:String>15:00</sys:String>
+                        <sys:String>16:00</sys:String>
+                        <sys:String>17:00</sys:String>
+                        <sys:String>18:00</sys:String>
+                        <sys:String>19:00</sys:String>
+                        <sys:String>20:00</sys:String>
+                        <sys:String>21:00</sys:String>
+                        <sys:String>22:00</sys:String>
+                    </x:Array>
+                </ItemsControl.ItemsSource>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" Height="40" Padding="5" VerticalAlignment="Top"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+
+        <!-- Kalendarz -->
+        <Grid Grid.Column="1" Background="White" ShowGridLines="True">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <!-- Nagłówek miesiąca -->
+                <RowDefinition Height="40"/>
+                <!-- Dni tygodnia -->
+                <RowDefinition Height="*"/>
+                <!-- Obszar z zadaniami -->
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <!-- 7 dni tygodnia -->
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Nagłówek miesiąca -->
+            <TextBlock x:Name="MonthLabel" Grid.Row="0" Grid.ColumnSpan="7" 
+                       Text="Czerwiec 2025" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" Margin="0,0,0,5"/>
+
+            <!-- Dni tygodnia + numer dnia -->
+            <StackPanel Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center">
+                <TextBlock x:Name="Day0Date" Text="1" FontSize="12"/>
+                <TextBlock Text="Pon" FontWeight="Bold"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center">
+                <TextBlock x:Name="Day1Date" Text="2" FontSize="12"/>
+                <TextBlock Text="Wt" FontWeight="Bold"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center">
+                <TextBlock x:Name="Day2Date" Text="3" FontSize="12"/>
+                <TextBlock Text="Śr" FontWeight="Bold"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center">
+                <TextBlock x:Name="Day3Date" Text="4" FontSize="12"/>
+                <TextBlock Text="Czw" FontWeight="Bold"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="4" HorizontalAlignment="Center">
+                <TextBlock x:Name="Day4Date" Text="5" FontSize="12"/>
+                <TextBlock Text="Pt" FontWeight="Bold"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="5" HorizontalAlignment="Center">
+                <TextBlock x:Name="Day5Date" Text="6" FontSize="12"/>
+                <TextBlock Text="Sob" FontWeight="Bold"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="6" HorizontalAlignment="Center">
+                <TextBlock x:Name="Day6Date" Text="7" FontSize="12"/>
+                <TextBlock Text="Nd" FontWeight="Bold"/>
+            </StackPanel>
+
+            <!-- Obszar do wyświetlania zadań -->
+            <Canvas x:Name="TasksCanvas" Grid.Row="2" Grid.ColumnSpan="7" Background="Transparent" Loaded="TasksCanvas_Loaded"/>
+        </Grid>
+
+        <!-- Panel formularza dodawania zadań i wyświetlania świąt -->
+        <Border Grid.Column="2" Margin="20" Background="White" Padding="20" CornerRadius="10" BorderBrush="#ddd" BorderThickness="1">
+            <StackPanel>
+                <Calendar x:Name="WeekCalendar" Margin="0 0 0 20" SelectedDatesChanged="WeekCalendar_SelectedDatesChanged"/>
+                <TextBlock Text="Dodaj zadanie" FontSize="20" FontWeight="Bold" Margin="0 0 0 10"/>
+
+                <TextBlock Text="Tytuł" Margin="0,10,0,2" FontWeight="SemiBold"/>
+                <TextBox x:Name="TitleTextBox" Margin="0 0 0 5" Padding="6"/>
+
+                <TextBlock Text="Dzień" Margin="0,10,0,2" FontWeight="SemiBold"/>
+                <ComboBox x:Name="DayComboBox" Margin="0 5" Padding="6" SelectedIndex="0">
+                    <ComboBoxItem Content="Poniedziałek" Tag="Monday"/>
+                    <ComboBoxItem Content="Wtorek" Tag="Tuesday"/>
+                    <ComboBoxItem Content="Środa" Tag="Wednesday"/>
+                    <ComboBoxItem Content="Czwartek" Tag="Thursday"/>
+                    <ComboBoxItem Content="Piątek" Tag="Friday"/>
+                    <ComboBoxItem Content="Sobota" Tag="Saturday"/>
+                    <ComboBoxItem Content="Niedziela" Tag="Sunday"/>
+                </ComboBox>
+
+                <TextBlock Text="Godzina startu (HH:mm)" Margin="0,10,0,2" FontWeight="SemiBold"/>
+                <TextBox x:Name="StartTimeBox" Margin="0 0 0 5" Padding="6" Text="09:00"/>
+
+                <TextBlock Text="Godzina zakończenia (HH:mm)" Margin="0,10,0,2" FontWeight="SemiBold"/>
+                <TextBox x:Name="EndTimeBox" Margin="0 0 0 5" Padding="6" Text="10:00"/>
+
+                <Button Content="Dodaj" Click="AddTask_Click" Margin="0 10 0 0" Padding="8"/>
+
+                <TextBlock Text="Święta w Polsce 2025" FontSize="20" FontWeight="Bold" Margin="0 20 0 10"/>
+                <ListBox x:Name="HolidaysListBox" Height="150" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
