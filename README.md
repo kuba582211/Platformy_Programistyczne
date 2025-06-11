@@ -24,8 +24,8 @@
    dotnet build
    dotnet run
 
-   Struktura projektu
-   SmartWeekPlanner/
+3. Struktura projektu
+SmartWeekPlanner/
 ├── MainWindow.xaml / .cs       # Główne UI aplikacji
 ├── TaskRepository.cs           # Logika bazy danych
 ├── HolidayService.cs           # Pobieranie świąt z API
